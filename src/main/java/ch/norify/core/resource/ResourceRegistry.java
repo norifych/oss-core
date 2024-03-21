@@ -3,6 +3,8 @@ package ch.norify.core.resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -24,5 +26,9 @@ public class ResourceRegistry {
       return Optional.empty();
     }
     return Optional.ofNullable(fileResources.get(name));
+  }
+
+  public List<String> getAllResources() {
+    return new ArrayList<>(fileResources.keySet());
   }
 }

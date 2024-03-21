@@ -38,18 +38,27 @@ public class StartupApplicationListener implements
       return;
     }
 
-    String[] parts = args.getSourceArgs()[0].split(" ");
     String extract = null;
     String pwd = null;
+    boolean listResources = false;
 
-    for (String part : parts) {
-      if (part.startsWith("--extract=")) {
-        extract = part.substring("--extract=".length());
-      } else if (part.startsWith("--pwd=")) {
-        pwd = part.substring("--pwd=".length());
+    for (String arg: args.getSourceArgs()) {
+      String[] parts = arg.split(" ");
+      for (String part : parts) {
+        if (part.startsWith("--extract=")) {
+          extract = part.substring("--extract=".length());
+        } else if (part.startsWith("--pwd=")) {
+          pwd = part.substring("--pwd=".length());
+        } else if (part.startsWith("--list-resources")) {
+          listResources = true;
+        }
       }
     }
-    log.info("extract: '{}' pwd: '{}'", extract, pwd);
+
+    if (listResources) {
+      log.info("Available file resources");
+      resourceRegistry.getAllResources().forEach(r -> log.info("- {}", r));
+    }
 
     if (extract != null && pwd != null) {
       String finalPwd = pwd;
